@@ -180,7 +180,7 @@
     }
   }
 
-  $footer-height: 4.5rem;
+  $footer-height: 5.5rem;
 
   &-main {
     width: 100%;
@@ -193,6 +193,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
+    padding: 0.8rem 1rem;
     width: 100%;
     height: $footer-height;
     background: linear-gradient(
@@ -201,9 +202,77 @@
         rgba(232, 88, 22, 1) 100%
     );
     border-radius: 10px 10px 0 0;
+    &-control {
+      display: flex;
+      align-items: center;
+      &-input {
+        height: 2rem;
+        border-radius: 1rem;
+        &-wrap {
+          position: relative;
+          flex-grow: 1;
+          margin-left: 1rem;
+        }
+        &-sent {
+          position: absolute;
+          top: 50%;
+          right: 0.5rem;
+          transform: translateY(-50%);
+          min-width: 1.4rem;
+          min-height: 1.4rem;
+          width: 1.4rem;
+          height: 1.4rem;
+          padding: 0.2rem;
+          border-radius: 50%;
+          background: #ef6c00;
+        }
+
+      }
+    }
   }
 
   .q-tab-panels {
     background: #faf4d3 !important;
+  }
+}
+
+
+.add-icon {
+  min-width: 1.6rem;
+  min-height: 1.6rem;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: all 0.3s;
+
+  &:after , &:before {
+    transition: all 0.3s;
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0.3rem;
+    height: 120%;
+    border-radius: 10px;
+    background: #E85816FF;
+  }
+  &:before {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  &--active {
+    transition: all 0.3s;
+    background: transparent;
+    &:after , &:before {
+      width: 0.5rem;
+      height: 180%;
+      transition: all 0.3s;
+      background: #ffffff;
+    }
+    &:before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+    &:after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
   }
 }

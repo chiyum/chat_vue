@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import footerControl from "@/components/layouts/layout-default-footer-control.vue";
 import getImageUrl from "@/utils/getImageUrl";
 import { useI18n } from "@/i18n";
 
@@ -108,7 +109,9 @@ init();
     <div class="layout-default-main">
       <slot />
     </div>
-    <div class="layout-default-footer"></div>
+    <div class="layout-default-footer">
+      <footer-control />
+    </div>
   </div>
 </template>
 
