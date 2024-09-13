@@ -8,6 +8,7 @@ interface PageModule {
     header?: string;
     noScroll?: boolean;
     slidePosition?: string;
+    sort?: number;
     // inSidebar?: boolean; // 後續自動新增sidebar
   };
 }
@@ -20,6 +21,7 @@ interface Route {
     layout: string;
     title: string;
     slidePosition: string;
+    sort: number;
     // inSidebar: boolean;
   };
   component: () => Promise<Component>;
@@ -53,10 +55,42 @@ for (const path in files) {
     meta: {
       layout: pageModule.default.layout || "layout-default", // 頁面 layout
       title: pageModule.default.title || "app.project.title", // 頁面 title
-      slidePosition: pageModule.default.slidePosition || "fade" // 頁面動畫
+      slidePosition: pageModule.default.slidePosition || "fade", // 頁面動畫
+      sort: pageModule.default.sort || -1 // 頁面排序
     },
     component: files[path] // 頁面 component
   });
 }
 
-export default modules;
+function sortRoutes(routes: Route[]): Route[] {
+  // 保存原始顺序
+  const originalOrder = routes.map((route, index) => ({ route, index }));
+
+  // 分离需要排序的路由和不需要排序的路由
+  const routesToSort = originalOrder.filter(
+    (item) =>
+      item.route.meta &&
+      item.route.meta.sort !== undefined &&
+      item.route.meta.sort !== -1
+  );
+  const routesNotToSort = originalOrder.filter(
+    (item) =>
+      !item.route.meta ||
+      item.route.meta.sort === undefined ||
+      item.route.meta.sort === -1
+  );
+
+  // 对需要排序的路由进行排序
+  routesToSort.sort((a, b) => a.route.meta.sort - b.route.meta.sort);
+
+  // 合并排序后的路由和不需要排序的路由，保持不排序路由的原始顺序
+  const sortedRoutes = [
+    ...routesToSort,
+    ...routesNotToSort.sort((a, b) => a.index - b.index)
+  ];
+
+  // 返回排序后的路由数组，不包含原始索引信息
+  return sortedRoutes.map((item) => item.route);
+}
+
+export default sortRoutes(modules);

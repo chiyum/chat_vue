@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import axios from "@/axios";
 // import { awaitAxios } from "@/axios";
-import GradientBorderBox from "@/components/gradient-border-box.vue";
 defineOptions({
   layout: "layout-default"
 });
@@ -19,16 +18,7 @@ test();
 </script>
 
 <template>
-  <div>
-    <GradientBorderBox
-      height="25px"
-      border-radius="16px"
-      wrap-border-radius="28px"
-      border-width="4px"
-      background="linear-gradient(0deg, rgba(252,166,17,1) 0%, rgba(255,246,184,1) 100%)"
-      border-color="linear-gradient(180deg, rgba(252,166,17,1) 0%, rgba(255,246,184,1) 100%)"
-    ></GradientBorderBox>
-  </div>
+  <div>game-lobby</div>
 </template>
 
 <style lang="scss" scoped>

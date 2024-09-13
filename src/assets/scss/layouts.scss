@@ -1,0 +1,209 @@
+@import "./minxin.scss";
+
+.layout-default {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  background: #faf4d3;
+
+  &-header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: linear-gradient(
+        0deg,
+        rgba(252, 131, 58, 1) 0%,
+        rgba(232, 88, 22, 1) 100%
+    );
+    border-radius: 0 0 10px 10px;
+    z-index: 1;
+
+    &-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      margin-bottom: 1.2rem;
+      height: 4rem;
+      background: linear-gradient(
+          0deg,
+          rgba(252, 131, 58, 1) 0%,
+          rgba(232, 88, 22, 1) 100%
+      );
+
+      &-nav {
+        position: relative;
+        display: flex;
+        align-items: center;
+        $nav-gap: 1rem;
+        gap: $nav-gap;
+        padding: 0.12rem 1rem;
+        color: #ffffff;
+        font-size: 1.03rem;
+        font-weight: bold;
+        background: linear-gradient(180deg, rgba(252, 131, 58, 1) 0%, rgba(232, 88, 22, 1) 100%);
+        border: 1px solid #ffffff;
+        border-radius: 100px;
+        transform: translateY(0.3rem);
+
+        &:after {
+          content: "";
+          position: absolute;
+          //top: 0;
+          //left: 0;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 99%;
+          height: 99%;
+          border-radius: 100px;
+          border: 1px solid rgba(#ffffff, 0.5);
+        }
+
+        &-item {
+          position: relative;
+          z-index: 1;
+
+          &:after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: calc($nav-gap * 2.5);
+            transform: translateY(-50%);
+            display: block;
+            width: 1px;
+            background: #ffffff;
+            height: 50%;
+          }
+
+          &:last-child {
+            &:after {
+              display: none;
+            }
+          }
+        }
+
+        &-active {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
+          z-index: 2;
+          transition: all 0.3s;
+          //padding: 0.2rem 0.75rem;
+
+          span {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 61px;
+            height: 34px;
+            font-size: 0.97rem;
+            padding-bottom: 0.15rem;
+            //padding: 0.2rem 0.75rem;
+            color: #FFF100;
+            background: linear-gradient(180deg, rgba(252, 131, 58, 1) 0%, rgba(232, 88, 22, 1) 100%);
+            border: 1px solid #ffffff;
+            border-radius: 100px;
+
+            &:before {
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              border-radius: 100px;
+              border: 1px solid rgba(#ffffff, 0.5);
+            }
+
+            &:after {
+              position: absolute;
+              bottom: 0.2rem;
+              content: "";
+              width: 0.18rem;
+              height: 0.18rem;
+              border-radius: 50%;
+              background: #FFF100;
+            }
+          }
+        }
+      }
+
+      &-profile {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.25rem;
+
+        &-item {
+          &:nth-child(1) {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+          }
+
+          &:nth-child(2) {
+            width: 2.7rem;
+            height: 2.7rem;
+          }
+        }
+
+        &-vip {
+          @include flex-center-center;
+          margin-bottom: -0.1rem !important;
+          width: 2rem;
+          $vip-height: 0.7rem;
+          height: $vip-height;
+          font-size: 0.55rem;
+          color: #ffffff;
+          background-color: #F39800;
+          border-radius: calc($vip-height / 2);
+        }
+
+        &-username {
+          color: #ffffff;
+          font-weight: 600;
+          font-size: 1rem;
+          letter-spacing: 1px;
+        }
+
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  $footer-height: 4.5rem;
+
+  &-main {
+    width: 100%;
+    flex-shrink: 0;
+    background: #faf4d3;
+    margin-bottom: $footer-height;
+  }
+
+  &-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: $footer-height;
+    background: linear-gradient(
+        0deg,
+        rgba(252, 131, 58, 1) 0%,
+        rgba(232, 88, 22, 1) 100%
+    );
+    border-radius: 10px 10px 0 0;
+  }
+
+  .q-tab-panels {
+    background: #faf4d3 !important;
+  }
+}

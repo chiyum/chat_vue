@@ -1,3 +1,4 @@
 export default {
-  hello: "Hello, World!"
+  hello: "Hello, World!",
+  "vip.level": `VIP{level}`
 };

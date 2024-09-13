@@ -37,4 +37,6 @@ const i18nOptions: I18nOptions = {
 
 const i18n = createI18n(i18nOptions);
 
+export const useI18n = () => i18n;
+
 export default i18n;

@@ -17,6 +17,7 @@ const layout = computed(() => {
 
 // 獲取路由配置中的路由
 const routes = computed(() => {
+  console.log(router.options.routes, "router.options.routes");
   return router.options.routes;
 });
 

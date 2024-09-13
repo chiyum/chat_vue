@@ -1,15 +1,108 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import getImageUrl from "@/utils/getImageUrl";
+import { useI18n } from "@/i18n";
+
+type Tab = {
+  name: string;
+  path: string;
+  index?: number;
+};
+
+interface State {
+  avatar: string;
+  vipLevel: number;
+  username: string;
+  tabs: Tab[];
+  currentTab: Tab | null;
+  activePosition: string;
+}
+
+const { t } = useI18n();
+const router = useRouter();
+
+const state: State = reactive({
+  avatar: getImageUrl("avartar.png"),
+  vipLevel: 1,
+  username: "Ager",
+  tabs: [
+    { name: "global.header.tab.news", path: "/news" },
+    { name: "global.header.tab.friends", path: "/friends" },
+    { name: "global.header.tab.gameLobby", path: "/game-lobby" }
+  ],
+  currentTab: null,
+  activePosition: computed(() => {
+    return state.currentTab?.index
+      ? `${Math.floor(state.currentTab.index * (100 / state.tabs.length)) - 2}%`
+      : "-2%";
+  })
+});
+
+const onToggleTab = (tab: Tab, index) => {
+  state.currentTab = { ...tab, index };
+  router.push(tab.path);
+};
+
+const setDefaultTab = () => {
+  const currentTab = state.tabs.find(
+    (tab) => tab.path === router.currentRoute.value.path
+  );
+  const currentTabIndex = state.tabs.findIndex(
+    (tab) => tab.path === router.currentRoute.value.path
+  );
+  if (currentTab) {
+    state.currentTab = {
+      ...currentTab,
+      index: currentTabIndex
+    };
+  }
+};
+
+const init = () => {
+  setDefaultTab();
+};
+init();
+</script>
 
 <template>
   <div class="layout-default">
     <div class="layout-default-header">
       <div class="layout-default-header-content">
-        <div class="layout-default-header-content-arrow"></div>
-        <div class="layout-default-header-content-nav">
-          <q-btn to="/home" label="home" />
-          <q-btn to="/notify" label="notify" />
+        <div class="layout-default-header-content-arrow">
+          <q-icon size="1.5rem" name="arrow_back_ios" color="white" />
         </div>
-        <div class="layout-default-header-content-profile"></div>
+        <div class="layout-default-header-content-nav">
+          <div
+            class="layout-default-header-content-nav-active"
+            :style="{
+              left: state.activePosition
+            }"
+          >
+            <span>
+              {{ t(state.currentTab?.name ?? "") }}
+            </span>
+          </div>
+          <div
+            class="layout-default-header-content-nav-item"
+            v-for="(tab, index) in state.tabs"
+            :key="tab.path"
+            @click="onToggleTab(tab, index)"
+          >
+            {{ t(tab.name) }}
+          </div>
+        </div>
+        <div class="layout-default-header-content-profile">
+          <div class="layout-default-header-content-profile-item">
+            <p class="layout-default-header-content-profile-vip">
+              {{ t("global.vip.level", { level: state.vipLevel }) }}
+            </p>
+            <p class="layout-default-header-content-profile-username">
+              {{ state.username }}
+            </p>
+          </div>
+          <q-avatar class="layout-default-header-content-profile-item">
+            <q-img :src="state.avatar" />
+          </q-avatar>
+        </div>
       </div>
     </div>
     <div class="layout-default-main">
@@ -20,59 +113,5 @@
 </template>
 
 <style lang="scss">
-.layout-default {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-  background: #faf4d3;
-  &-header {
-    position: sticky;
-    top: 0;
-    width: 100%;
-    background: linear-gradient(
-      0deg,
-      rgba(252, 131, 58, 1) 0%,
-      rgba(232, 88, 22, 1) 100%
-    );
-    border-radius: 0 0 10px 10px;
-    z-index: 1;
-    &-content {
-      margin-bottom: 1.2rem;
-      height: 4rem;
-      background: linear-gradient(
-        0deg,
-        rgba(252, 131, 58, 1) 0%,
-        rgba(232, 88, 22, 1) 100%
-      );
-    }
-  }
-  $footer-height: 4.5rem;
-  &-main {
-    width: 100%;
-    flex-shrink: 0;
-    background: #faf4d3;
-    margin-bottom: $footer-height;
-  }
-  &-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: $footer-height;
-    background: linear-gradient(
-      0deg,
-      rgba(252, 131, 58, 1) 0%,
-      rgba(232, 88, 22, 1) 100%
-    );
-    border-radius: 10px 10px 0 0;
-  }
-  .q-tab-panels {
-    background: #faf4d3 !important;
-  }
-}
+@import "@/assets/scss/layouts.scss";
 </style>

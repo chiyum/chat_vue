@@ -4,7 +4,7 @@ import createRoutes from "@/_app/routes";
 
 /* 設定預設導入頁面 */
 const options = {
-  defaultPath: "/home"
+  defaultPath: "/news"
 };
 
 /* 建立router */
