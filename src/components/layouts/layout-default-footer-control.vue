@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import GradientBorderBox from "@/components/gradient-border-box.vue";
 
+const TOOL_HEIGHT: string = "2.25rem";
+
 interface State {
   enterText: string;
   isShowTool: boolean;
@@ -23,26 +25,33 @@ const state: State = reactive({
         style="background: none; box-shadow: none"
         anchor="top start"
         self="bottom left"
-        :offset="[0, 35]"
-        @show="
-          () => {
-            state.isShowTool = true;
-          }
-        "
-        @hide="
-          () => {
-            state.isShowTool = false;
+        :offset="[0, 30]"
+        @update:model-value="
+          (isOpen) => {
+            state.isShowTool = isOpen;
           }
         "
       >
         <gradient-border-box
-          border-radius="20px"
-          wrapBorderRadius="20px"
+          :border-radius="`calc(${TOOL_HEIGHT} / 2)`"
+          :wrapBorderRadius="`calc(${TOOL_HEIGHT}/ 2)`"
           background="linear-gradient(90deg, rgba(252,131,58,1) 0%, rgba(232,88,22,1) 100%)"
           border-color="linear-gradient(180deg, rgba(252,131,58,1) 0%, rgba(232,88,22,1) 100%)"
-          height="2rem"
+          :height="TOOL_HEIGHT"
           width="8rem"
-        ></gradient-border-box>
+        >
+          <div class="layout-default-footer-control-tool">
+            <q-icon style="width: 1.4rem; height: 1.4rem">
+              <q-img src="@/assets/images/amount_icon.svg" />
+            </q-icon>
+            <q-icon style="width: 1.4rem; height: 1.4rem">
+              <q-img src="@/assets/images/image_icon.svg" />
+            </q-icon>
+            <q-icon style="width: 1.4rem; height: 1.4rem">
+              <q-img src="@/assets/images/expression.svg" />
+            </q-icon>
+          </div>
+        </gradient-border-box>
       </q-menu>
     </q-icon>
     <div class="layout-default-footer-control-input-wrap">
