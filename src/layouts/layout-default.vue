@@ -16,6 +16,7 @@ interface State {
   tabs: Tab[];
   currentTab: Tab | null;
   activePosition: string;
+  onBackFunction: null | (() => void);
 }
 
 const { t } = useI18n();
@@ -41,7 +42,8 @@ const state: State = reactive({
     return state.currentTab?.index
       ? `${Math.floor(state.currentTab.index * (100 / state.tabs.length)) - 2}%`
       : "-2%";
-  })
+  }),
+  onBackFunction: null
 });
 
 const onToggleTab = (tab: Tab, index: number) => {
@@ -65,12 +67,19 @@ const setDefaultTab = () => {
 };
 
 const onBack = () => {
-  router.back();
+  if (state.onBackFunction) state.onBackFunction();
+  else router.back();
 };
 
 const init = () => {
   setDefaultTab();
 };
+
+const changeBackFunction = (onBackFunction: null | (() => void)) => {
+  state.onBackFunction = onBackFunction;
+};
+
+provide("changeBackFunction", changeBackFunction);
 
 init();
 

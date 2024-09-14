@@ -1,24 +1,34 @@
 <script setup lang="ts">
-import { useI18n } from "@/i18n";
 import GradientBorderBox from "@/components/gradient-border-box.vue";
-import { FriendsItem } from "@/types/friends";
 import getImageUrl from "@/utils/getImageUrl";
-// import { awaitAxios } from "@/axios";
+import { useI18n } from "@/i18n";
+import { useQuasar } from "quasar";
+// types
+import { FriendsItem } from "@/types/friends";
+
 defineOptions({
   layout: "layout-default",
   sort: 2,
   handleScroll: true
 });
 
+const changeBackFunction = inject("changeBackFunction") as any;
+
 const { t } = useI18n();
+const $q = useQuasar();
+const router = useRouter();
 
 interface State {
+  isAddPage: boolean;
+  addText: string;
   filterText: string;
   friends: FriendsItem[];
   originalFriends: FriendsItem[];
 }
 
 const state: State = reactive({
+  isAddPage: false,
+  addText: "",
   filterText: "",
   friends: [],
   originalFriends: [
@@ -46,16 +56,47 @@ const onLocalFilter = () => {
   });
 };
 
+const onAddFriend = () => {
+  state.originalFriends = [
+    ...state.originalFriends,
+    {
+      name: state.addText,
+      avatar: getImageUrl("avartar.png"),
+      vipLevel: 1,
+      lastText: "..."
+    }
+  ];
+  // 待API
+  $q.notify({
+    message: t("global.friends.add.suc"),
+    color: "positive",
+    position: "center"
+  });
+  state.addText = "";
+  state.isAddPage = false;
+};
+
 const init = () => {
   state.friends = state.originalFriends;
+  changeBackFunction(() => {
+    if (state.isAddPage) state.isAddPage = false;
+    else router.back();
+  });
 };
+
+watch(
+  () => state.originalFriends,
+  () => {
+    state.friends = state.originalFriends;
+  }
+);
 
 init();
 </script>
 
 <template>
   <div class="friends">
-    <div class="friends-menu">
+    <div class="friends-menu" v-if="!state.isAddPage">
       <div class="friends-menu-search">
         <div class="friends-menu-search-label">
           {{ t("global.friends.search.label") }}
@@ -112,9 +153,34 @@ init();
         </gradient-border-box>
       </div>
       <div class="friends-menu-add">
-        <div>
+        <div @click="state.isAddPage = true">
+          {{ t("global.friends.add") }}+
+        </div>
+      </div>
+    </div>
+    <div class="friends-add" v-else>
+      <div class="friends-add-search">
+        <div class="friends-add-search-label">
           {{ t("global.friends.add") }}
         </div>
+        <input
+          :placeholder="t('global.friends.search.placeholder')"
+          class="friends-add-search-input"
+          type="text"
+          v-model="state.addText"
+          @keyup.enter="onAddFriend"
+        />
+        <div class="friends-add-search-icon">
+          <div @click="onAddFriend">
+            <q-icon size="1.2rem" color="white" name="search"></q-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="friends-bg" v-if="state.originalFriends.length === 0">
+      <q-img src="@/assets/images/empty_bg.svg" />
+      <div class="friends-bg-text">
+        {{ t("global.friends.empty") }}
       </div>
     </div>
   </div>
