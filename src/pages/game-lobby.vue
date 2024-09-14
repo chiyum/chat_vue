@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import chatList from "@/components/chat-list.vue";
-const messages = [
+import { useChatStore } from "@/store/chat";
+import { storeToRefs } from "pinia";
+import { getImageUrl } from "@/utils/getImageUrl";
+
+const chatStore = useChatStore();
+const { messages } = storeToRefs(chatStore);
+console.log(getImageUrl("avartar.png"), "images");
+const fackmessages = [
   {
     name: "avatar",
-    avatar: "https://cdn.quasar.dev/img/avatar4.jpg",
+    avatar: getImageUrl("avartar.png"),
     text: "hey, how are you?",
     isSent: true,
-    stamp: "7 minutes ag",
+    stamp: "12:00",
     otherData: {
       vipLevel: 3,
       isRead: true
@@ -17,13 +24,18 @@ const messages = [
     avatar: "https://cdn.quasar.dev/img/avatar3.jpg",
     text: "hey, how are you?",
     isSent: false,
-    stamp: "4 minutes ag",
+    stamp: "12:30",
     otherData: {
       vipLevel: 1,
       isRead: true
     }
   }
 ];
+
+const init = () => {
+  chatStore.initDefaultMessages(fackmessages);
+};
+init();
 defineOptions({
   layout: "layout-default"
 });

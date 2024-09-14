@@ -20,6 +20,7 @@ interface State {
 
 const { t } = useI18n();
 const router = useRouter();
+const route = useRoute();
 
 const state: State = reactive({
   avatar: getImageUrl("avartar.png"),
@@ -110,7 +111,7 @@ init();
       <slot />
     </div>
     <div class="layout-default-footer">
-      <footer-control />
+      <footer-control v-if="!route.meta.hideInput" />
     </div>
   </div>
 </template>

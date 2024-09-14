@@ -12,7 +12,9 @@ import { Quasar, Loading, Dialog, Notify } from "quasar";
 import "@quasar/extras/material-icons/material-icons.css";
 import "quasar/src/css/index.sass";
 import i18n from "@/i18n";
+import { createPinia } from "pinia";
 
+const pinia = createPinia();
 const VueApp = createApp(App);
 
 VueApp.use(router);
@@ -26,4 +28,5 @@ VueApp.use(Quasar, {
   }
 });
 VueApp.use(i18n);
+VueApp.use(pinia);
 VueApp.mount("#app");

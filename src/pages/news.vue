@@ -3,7 +3,8 @@ import axios from "@/axios";
 // import { awaitAxios } from "@/axios";
 defineOptions({
   layout: "layout-default",
-  sort: 1
+  sort: 1,
+  hideInput: true
 });
 
 // const { t } = useI18n();
