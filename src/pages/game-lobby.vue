@@ -4,9 +4,13 @@ import { useChatStore } from "@/store/chat";
 import { storeToRefs } from "pinia";
 import { getImageUrl } from "@/utils/getImageUrl";
 
+defineOptions({
+  layout: "layout-default"
+});
+
 const chatStore = useChatStore();
 const { messages } = storeToRefs(chatStore);
-console.log(getImageUrl("avartar.png"), "images");
+
 const fackmessages = [
   {
     name: "avatar",
@@ -36,9 +40,6 @@ const init = () => {
   chatStore.initDefaultMessages(fackmessages);
 };
 init();
-defineOptions({
-  layout: "layout-default"
-});
 </script>
 
 <template>
@@ -46,17 +47,3 @@ defineOptions({
     <chat-list :chat-list="messages" />
   </div>
 </template>
-
-<style lang="scss" scoped>
-//.home-card {
-//  margin: 20px;
-//  width: 400px;
-//  background: #eeeeee;
-//}
-//
-//.box {
-//  border-radius: 28px;
-//  border: #ffffff 5px solid;
-//  box-shadow: #e2a307 0.5px 0.5px 0.5px;
-//}
-</style>

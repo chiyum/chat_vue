@@ -22,14 +22,19 @@ const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 
+const scrollStyle = computed(() => {
+  const isNoScroll = route.meta.handleScroll;
+  return isNoScroll ? "overflow-y: hidden" : "overflow-y: scroll";
+});
+
 const state: State = reactive({
   avatar: getImageUrl("avartar.png"),
   vipLevel: 1,
   username: "Ager",
   tabs: [
-    { name: "global.header.tab.news", path: "/news" },
-    { name: "global.header.tab.friends", path: "/friends" },
-    { name: "global.header.tab.gameLobby", path: "/game-lobby" }
+    { name: "global.header.tab.news", path: "/news", index: 0 },
+    { name: "global.header.tab.friends", path: "/friends", index: 1 },
+    { name: "global.header.tab.gameLobby", path: "/game-lobby", index: 2 }
   ],
   currentTab: null,
   activePosition: computed(() => {
@@ -39,7 +44,7 @@ const state: State = reactive({
   })
 });
 
-const onToggleTab = (tab: Tab, index) => {
+const onToggleTab = (tab: Tab, index: number) => {
   state.currentTab = { ...tab, index };
   router.push(tab.path);
 };
@@ -59,18 +64,37 @@ const setDefaultTab = () => {
   }
 };
 
+const onBack = () => {
+  router.back();
+};
+
 const init = () => {
   setDefaultTab();
 };
+
 init();
+
+watch(
+  () => route.path,
+  (newPath) => {
+    const currentTab = state.tabs.find((tab) => tab.path === newPath);
+    onToggleTab(currentTab, currentTab?.index ?? 0);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
-  <div class="layout-default">
+  <div class="layout-default" :style="`${scrollStyle}`">
     <div class="layout-default-header">
       <div class="layout-default-header-content">
         <div class="layout-default-header-content-arrow">
-          <q-icon size="1.5rem" name="arrow_back_ios" color="white" />
+          <q-icon
+            size="1.5rem"
+            name="arrow_back_ios"
+            color="white"
+            @click="onBack"
+          />
         </div>
         <div class="layout-default-header-content-nav">
           <div

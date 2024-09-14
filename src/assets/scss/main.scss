@@ -11,3 +11,17 @@ body {
     sans-serif;
   overflow-x: hidden;
 }
+
+
+// global styles
+.normal-avatar {
+  border: 1px solid #ffffff;
+  border-radius: 50%;
+  background: #D9D9D9;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

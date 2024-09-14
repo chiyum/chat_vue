@@ -1,38 +1,51 @@
 <script setup lang="ts">
-import axios from "@/axios";
-// import { awaitAxios } from "@/axios";
+import chatList from "@/components/chat-list.vue";
+import { useChatStore } from "@/store/chat";
+import { storeToRefs } from "pinia";
+import { getImageUrl } from "@/utils/getImageUrl";
+
 defineOptions({
   layout: "layout-default",
   sort: 1,
   hideInput: true
 });
 
-// const { t } = useI18n();
+const chatStore = useChatStore();
+const { messages } = storeToRefs(chatStore);
 
-/** axios範例用法 */
-const test = async () => {
-  console.log("test12");
-  const res = await axios.get("/api/get", { params: { name: "test" } });
-  // const res = await awaitAxios("post", "/api/example", { nam1e: "test" });
-  console.log(res, "res");
+const fackmessages = [
+  {
+    name: "WU88客服",
+    avatar: getImageUrl("customer_service_logo.jpeg"),
+    text:
+      "***金流出款次數公告*** - 因近日銀行往來次數嚴格，對於代付出款次數將進行調整\n" +
+      "\n" +
+      "時段 : 不限\n" +
+      "\n" +
+      "因近期銀行風控較嚴，為避免會員損失及風險\n" +
+      "\n" +
+      "出款將嚴格限制一筆，且包含其他娛樂城當日出金紀錄\n" +
+      "\n" +
+      "若點數退回您的錢包，請於隔日再提交出款\n" +
+      "\n" +
+      "造成不便，敬請見諒！",
+    isSent: false,
+    stamp: "12:30",
+    otherData: {
+      vipLevel: 1,
+      isRead: true
+    }
+  }
+];
+
+const init = () => {
+  chatStore.initDefaultMessages(fackmessages);
 };
-test();
+init();
 </script>
 
 <template>
-  <div>news</div>
+  <div style="height: 100%">
+    <chat-list :chat-list="messages" />
+  </div>
 </template>
-
-<style lang="scss" scoped>
-//.home-card {
-//  margin: 20px;
-//  width: 400px;
-//  background: #eeeeee;
-//}
-//
-//.box {
-//  border-radius: 28px;
-//  border: #ffffff 5px solid;
-//  box-shadow: #e2a307 0.5px 0.5px 0.5px;
-//}
-</style>

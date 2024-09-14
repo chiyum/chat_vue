@@ -17,7 +17,6 @@ const layout = computed(() => {
 
 // 獲取路由配置中的路由
 const routes = computed(() => {
-  console.log(router.options.routes, "router.options.routes");
   return router.options.routes;
 });
 
@@ -59,7 +58,7 @@ const onTabChange = (newTab: number) => {
       >
         <router-view v-slot="{ Component }">
           <keep-alive>
-            <component :is="Component" v-if="index === activeTab" />
+            <component :is="Component" v-if="index == activeTab" />
           </keep-alive>
         </router-view>
       </q-tab-panel>

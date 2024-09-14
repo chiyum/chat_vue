@@ -10,6 +10,7 @@ interface PageModule {
     slidePosition?: string;
     sort?: number;
     hideInput?: boolean;
+    handleScroll?: boolean;
     // inSidebar?: boolean; // 後續自動新增sidebar
   };
 }
@@ -24,6 +25,7 @@ interface Route {
     slidePosition: string;
     sort: number;
     hideInput: boolean;
+    handleScroll: boolean;
     // inSidebar: boolean;
   };
   component: () => Promise<Component>;
@@ -59,7 +61,8 @@ for (const path in files) {
       title: pageModule.default.title || "app.project.title", // 頁面 title
       slidePosition: pageModule.default.slidePosition || "fade", // 頁面動畫
       sort: pageModule.default.sort || -1, // 頁面排序
-      hideInput: pageModule.default.hideInput || false // 頁面排序
+      hideInput: pageModule.default.hideInput || false, // 頁面排序
+      handleScroll: pageModule.default.handleScroll || false // 關閉頁面滑動 用於layout-deafult
     },
     component: files[path] // 頁面 component
   });
