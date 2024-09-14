@@ -5,6 +5,32 @@ import { useI18n } from "@/i18n";
 import { useQuasar } from "quasar";
 // types
 import { FriendsItem } from "@/types/friends";
+import ChatList from "@/components/chat-list.vue";
+
+const fackmessages = [
+  {
+    name: "avatar",
+    avatar: getImageUrl("avartar.png"),
+    text: "hey, how are you?",
+    isSent: true,
+    stamp: "12:00",
+    otherData: {
+      vipLevel: 3,
+      isRead: true
+    }
+  },
+  {
+    name: "Jane",
+    avatar: "https://cdn.quasar.dev/img/avatar3.jpg",
+    text: "hey, how are you?",
+    isSent: false,
+    stamp: "12:30",
+    otherData: {
+      vipLevel: 1,
+      isRead: true
+    }
+  }
+];
 
 defineOptions({
   layout: "layout-default",
@@ -20,14 +46,17 @@ const router = useRouter();
 
 interface State {
   isAddPage: boolean;
+  isChat: boolean;
   addText: string;
   filterText: string;
   friends: FriendsItem[];
   originalFriends: FriendsItem[];
+  chatList: any[];
 }
 
 const state: State = reactive({
   isAddPage: false,
+  isChat: false,
   addText: "",
   filterText: "",
   friends: [],
@@ -44,7 +73,8 @@ const state: State = reactive({
       vipLevel: 1,
       lastText: "hey, how are you?"
     }
-  ]
+  ],
+  chatList: []
 });
 
 const onLocalFilter = () => {
@@ -76,11 +106,26 @@ const onAddFriend = () => {
   state.isAddPage = false;
 };
 
+const onChat = (id) => {
+  state.isChat = true;
+  state.chatList = fackmessages;
+  console.log(id);
+};
+
 const init = () => {
   state.friends = state.originalFriends;
   changeBackFunction(() => {
-    if (state.isAddPage) state.isAddPage = false;
-    else router.back();
+    switch (true) {
+      case state.isAddPage:
+        state.isAddPage = false;
+        break;
+      case state.isChat:
+        state.isChat = false;
+        break;
+      default:
+        router.back();
+        break;
+    }
   });
 };
 
@@ -97,66 +142,72 @@ init();
 <template>
   <div class="friends">
     <div class="friends-menu" v-if="!state.isAddPage">
-      <div class="friends-menu-search">
-        <div class="friends-menu-search-label">
-          {{ t("global.friends.search.label") }}
-        </div>
-        <input
-          :placeholder="t('global.friends.search.placeholder')"
-          class="friends-menu-search-input"
-          type="text"
-          v-model="state.filterText"
-          @keyup.enter="onLocalFilter"
-        />
-        <div class="friends-menu-search-icon">
-          <div @click="onLocalFilter">
-            <q-icon size="1.2rem" color="white" name="search"></q-icon>
+      <template v-if="state.isChat">
+        <chat-list :chat-list="state.chatList"></chat-list>
+      </template>
+      <template v-else>
+        <div class="friends-menu-search">
+          <div class="friends-menu-search-label">
+            {{ t("global.friends.search.label") }}
+          </div>
+          <input
+            :placeholder="t('global.friends.search.placeholder')"
+            class="friends-menu-search-input"
+            type="text"
+            v-model="state.filterText"
+            @keyup.enter="onLocalFilter"
+          />
+          <div class="friends-menu-search-icon">
+            <div @click="onLocalFilter">
+              <q-icon size="1.2rem" color="white" name="search"></q-icon>
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        class="friends-menu-item"
-        v-for="(friend, index) in state.friends"
-        :key="`${friend.name}-${index}`"
-      >
-        <gradient-border-box
-          border-radius="13px"
-          border-width="4.5px"
-          wrapBorderRadius="13px"
-          background="linear-gradient(0deg, rgba(252,166,17,1) 0%, rgba(255,246,184,1) 100%)"
-          border-color="linear-gradient(180deg, rgba(252,166,17,1) 0%, rgba(255,246,184,1) 100%)"
-          height="6rem"
-          width="100%"
+        <div
+          class="friends-menu-item"
+          v-for="(friend, index) in state.friends"
+          :key="`${friend.name}-${index}`"
         >
-          <div class="friends-menu-item-content">
-            <q-img class="normal-avatar" :src="friend.avatar" />
-            <div class="friends-menu-item-content-middle">
-              <div class="friends-menu-item-content-middle-profile">
-                <div>{{ friend.name }}</div>
-                <div>VIP {{ friend.vipLevel }}</div>
+          <gradient-border-box
+            border-radius="13px"
+            border-width="4.5px"
+            wrapBorderRadius="13px"
+            background="linear-gradient(0deg, rgba(252,166,17,1) 0%, rgba(255,246,184,1) 100%)"
+            border-color="linear-gradient(180deg, rgba(252,166,17,1) 0%, rgba(255,246,184,1) 100%)"
+            height="6rem"
+            width="100%"
+          >
+            <div class="friends-menu-item-content">
+              <q-img class="normal-avatar" :src="friend.avatar" />
+              <div class="friends-menu-item-content-middle">
+                <div class="friends-menu-item-content-middle-profile">
+                  <div>{{ friend.name }}</div>
+                  <div>VIP {{ friend.vipLevel }}</div>
+                </div>
+                <div class="truncate">
+                  {{ friend.lastText }}
+                </div>
               </div>
-              <div class="truncate">
-                {{ friend.lastText }}
+              <div class="friends-menu-item-content-right">
+                <q-img
+                  style="width: 2.2rem; height: 2.2rem"
+                  src="@/assets/images/w_point_icon.svg"
+                />
+                <q-img
+                  @click="onChat(friend.name)"
+                  style="width: 2.2rem; height: 2.2rem"
+                  src="@/assets/images/chat_icon.svg"
+                />
               </div>
             </div>
-            <div class="friends-menu-item-content-right">
-              <q-img
-                style="width: 2.2rem; height: 2.2rem"
-                src="@/assets/images/w_point_icon.svg"
-              />
-              <q-img
-                style="width: 2.2rem; height: 2.2rem"
-                src="@/assets/images/chat_icon.svg"
-              />
-            </div>
-          </div>
-        </gradient-border-box>
-      </div>
-      <div class="friends-menu-add">
-        <div @click="state.isAddPage = true">
-          {{ t("global.friends.add") }}+
+          </gradient-border-box>
         </div>
-      </div>
+        <div class="friends-menu-add">
+          <div @click="state.isAddPage = true">
+            {{ t("global.friends.add") }}+
+          </div>
+        </div>
+      </template>
     </div>
     <div class="friends-add" v-else>
       <div class="friends-add-search">
