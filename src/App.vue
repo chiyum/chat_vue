@@ -66,3 +66,9 @@ const onTabChange = (newTab: number) => {
     </q-tab-panels>
   </component>
 </template>
+
+<style scoped lang="scss">
+:deep(.q-tab-panels) {
+  height: 100%;
+}
+</style>

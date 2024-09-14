@@ -183,6 +183,7 @@
   $footer-height: 5.5rem;
 
   &-main {
+    flex-grow: 1;
     width: 100%;
     flex-shrink: 0;
     background: #faf4d3;

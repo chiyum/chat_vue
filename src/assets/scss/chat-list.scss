@@ -1,0 +1,123 @@
+@import "./minxin.scss";
+
+.chat-box-messages {
+  &-avatar {
+    $size: 3.5rem;
+    width: $size;
+    min-width: $size;
+    height: $size;
+    min-height: $size;
+    border: 1px solid #ffffff;
+    border-radius: 50%;
+    background: #D9D9D9;
+  }
+
+  &-stamp {
+    color: #8A8A8A;
+    font-size: 0.6rem;
+  }
+
+  &-profile {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.25rem;
+
+    &--sent {
+      justify-content: flex-end;
+
+      .chat-box-messages-profile-item {
+        &:nth-child(1) {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+        }
+      }
+    }
+
+    &-item {
+      &:nth-child(1) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      &:nth-child(2) {
+        width: 2.7rem;
+        height: 2.7rem;
+      }
+    }
+
+    &-vip {
+      @include flex-center-center;
+      margin-bottom: -0.1rem !important;
+      width: 2rem;
+      $vip-height: 0.7rem;
+      height: $vip-height;
+      font-size: 0.55rem;
+      color: #ffffff;
+      background-color: #F39800;
+      border-radius: calc($vip-height / 2);
+    }
+
+    &-username {
+      color: #393E41;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 1px;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .q-message-container {
+    gap: 1rem;
+    & > div:nth-child(2){
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex-grow: 1;
+    }
+  }
+
+  $message-height: 3.5rem;
+  $message-border-radius: calc($message-height / 2);
+
+  .q-message-text {
+    //min-width: 220px;
+    width: 93%;
+    padding: 8px 20px;
+    height: $message-height;
+    border-radius: 0 $message-border-radius $message-border-radius $message-border-radius;
+    background: #ffffff;
+
+    .q-message-text-content {
+      //color: #C9CACA;
+      color: #5a5a5a;
+    }
+
+    &:before {
+      content: "";
+      display: none;
+    }
+  }
+
+  .q-message-text.q-message-text--sent {
+    border-radius: $message-border-radius 0 $message-border-radius $message-border-radius;
+    background: #FB8138;
+
+    .q-message-text-content {
+      color: #ffffff;
+    }
+  }
+}
+
+.q-message-sent {
+  .q-message-container > div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-grow: 1;
+  }
+}

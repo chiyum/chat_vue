@@ -82,7 +82,7 @@ const state: State = reactive({
   height: 2rem;
   background-color: #ffffff;
   border-radius: 1rem;
-  color: #828080;
+  color: #5a5a5a;
   &::placeholder {
     color: #c9caca;
   }

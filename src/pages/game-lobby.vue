@@ -1,24 +1,38 @@
 <script setup lang="ts">
-import axios from "@/axios";
-// import { awaitAxios } from "@/axios";
+import chatList from "@/components/chat-list.vue";
+const messages = [
+  {
+    name: "avatar",
+    avatar: "https://cdn.quasar.dev/img/avatar4.jpg",
+    text: "hey, how are you?",
+    isSent: true,
+    stamp: "7 minutes ag",
+    otherData: {
+      vipLevel: 3,
+      isRead: true
+    }
+  },
+  {
+    name: "Jane",
+    avatar: "https://cdn.quasar.dev/img/avatar3.jpg",
+    text: "hey, how are you?",
+    isSent: false,
+    stamp: "4 minutes ag",
+    otherData: {
+      vipLevel: 1,
+      isRead: true
+    }
+  }
+];
 defineOptions({
   layout: "layout-default"
 });
-
-// const { t } = useI18n();
-
-/** axios範例用法 */
-const test = async () => {
-  console.log("test12");
-  const res = await axios.get("/api/get", { params: { name: "test" } });
-  // const res = await awaitAxios("post", "/api/example", { nam1e: "test" });
-  console.log(res, "res");
-};
-test();
 </script>
 
 <template>
-  <div>game-lobby</div>
+  <div style="height: 100%">
+    <chat-list :chat-list="messages" />
+  </div>
 </template>
 
 <style lang="scss" scoped>
