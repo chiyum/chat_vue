@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import GradientBorderBox from "@/components/gradient-border-box.vue";
+import ChatList from "@/components/chat-list.vue";
 import getImageUrl from "@/utils/getImageUrl";
 import { useI18n } from "@/i18n";
 import { useQuasar } from "quasar";
 // types
 import { FriendsItem } from "@/types/friends";
-import ChatList from "@/components/chat-list.vue";
+import { useChatStore } from "@/store/chat";
 
 const fackmessages = [
   {
@@ -43,6 +44,8 @@ const changeBackFunction = inject("changeBackFunction") as any;
 const { t } = useI18n();
 const $q = useQuasar();
 const router = useRouter();
+const chatStore = useChatStore();
+const { messages } = storeToRefs(chatStore);
 
 interface State {
   isAddPage: boolean;
@@ -77,6 +80,8 @@ const state: State = reactive({
   chatList: []
 });
 
+const msgContainer = ref(null);
+
 const onLocalFilter = () => {
   if (state.filterText === "") {
     state.friends = state.originalFriends;
@@ -108,7 +113,7 @@ const onAddFriend = () => {
 
 const onChat = (id) => {
   state.isChat = true;
-  state.chatList = fackmessages;
+  chatStore.initDefaultMessages(fackmessages);
   console.log(id);
 };
 
@@ -136,14 +141,28 @@ watch(
   }
 );
 
+watch(
+  () => messages,
+  () => {
+    if (msgContainer.value) {
+      nextTick(() => {
+        msgContainer.value.scrollTop = msgContainer.value.scrollHeight;
+      });
+    }
+  },
+  {
+    deep: true
+  }
+);
+
 init();
 </script>
 
 <template>
-  <div class="friends">
+  <div class="friends" ref="msgContainer">
     <div class="friends-menu" v-if="!state.isAddPage">
       <template v-if="state.isChat">
-        <chat-list :chat-list="state.chatList"></chat-list>
+        <chat-list :chat-list="messages"></chat-list>
       </template>
       <template v-else>
         <div class="friends-menu-search">

@@ -2,6 +2,7 @@
 import footerControl from "@/components/layouts/layout-default-footer-control.vue";
 import getImageUrl from "@/utils/getImageUrl";
 import { useI18n } from "@/i18n";
+import { useChatStore } from "@/store/chat";
 
 type Tab = {
   name: string;
@@ -22,6 +23,8 @@ interface State {
 const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
+const { messages } = storeToRefs(useChatStore());
+const msgContainer = ref(null);
 
 const scrollStyle = computed(() => {
   const isNoScroll = route.meta.handleScroll;
@@ -91,10 +94,24 @@ watch(
   },
   { immediate: true }
 );
+
+watch(
+  () => messages,
+  () => {
+    if (msgContainer.value) {
+      nextTick(() => {
+        msgContainer.value.scrollTop = msgContainer.value.scrollHeight;
+      });
+    }
+  },
+  {
+    deep: true
+  }
+);
 </script>
 
 <template>
-  <div class="layout-default" :style="`${scrollStyle}`">
+  <div class="layout-default" :style="`${scrollStyle}`" ref="msgContainer">
     <div class="layout-default-header">
       <div class="layout-default-header-content">
         <div class="layout-default-header-content-arrow">
