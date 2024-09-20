@@ -8,6 +8,7 @@ import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/chat_vue/", // 設置基礎路徑 為了配合github action
   plugins: [
     vue({
       template: { transformAssetUrls }
